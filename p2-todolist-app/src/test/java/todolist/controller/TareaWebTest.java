@@ -51,8 +51,8 @@ public class TareaWebTest {
         usuario = usuarioService.registrar(usuario);
 
         // Y añadimos dos tareas asociadas a ese usuario
-        TareaData tarea1 = tareaService.nuevaTareaUsuario(usuario.getId(), "Buy milk");
-        tareaService.nuevaTareaUsuario(usuario.getId(), "Book a flight");
+        TareaData tarea1 = tareaService.nuevaTareaUsuario(usuario.getId(), "Buy milk", "Baja");
+        tareaService.nuevaTareaUsuario(usuario.getId(), "Book a flight", "Alta");
 
         // Devolvemos los ids del usuario y de la primera tarea añadida
         Map<String, Long> ids = new HashMap<>();
