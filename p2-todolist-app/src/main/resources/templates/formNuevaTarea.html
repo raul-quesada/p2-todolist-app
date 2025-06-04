@@ -1,39 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments :: head (titulo='Login')"></head>
+<head th:replace="fragments :: head (titulo='Nueva Tarea')"></head>
 
 <body>
 <div th:replace="fragments::navbar"></div>
-<div class="container-fluid">
+<div class="container pt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h2 class="mb-4" th:text="'Nueva tarea para el usuario ' + ${usuario.getNombre()}"></h2>
+            <form method="post" th:action="@{/usuarios/{id}/tareas/nueva(id=${usuario.id})}" th:object="${tareaData}">
+                <!-- Campo: Título -->
+                <div class="mb-3">
+                    <label for="titulo" class="form-label">Título de la tarea:</label>
+                    <input class="form-control" id="titulo" name="titulo" required th:field="*{titulo}" type="text"/>
+                </div>
 
-    <h2 th:text="'Nueva tarea para el usuario ' + ${usuario.getNombre()}"></h2>
+                <!-- Campo: Prioridad -->
+                <div class="mb-3">
+                    <label for="prioridad" class="form-label">Prioridad:</label>
+                    <select class="form-select" id="prioridad" name="prioridad" required th:field="*{prioridad}">
+                        <option value="Alta">Alta</option>
+                        <option value="Media" selected>Media</option>
+                        <option value="Baja">Baja</option>
+                    </select>
+                </div>
 
-    <form method="post" th:action="@{/usuarios/{id}/tareas/nueva(id=${usuario.id})}" th:object="${tareaData}">
-        <div class="col-6">
-
-            <!-- Campo: Título -->
-            <div class="form-group">
-                <label for="titulo">Título de la tarea:</label>
-                <input class="form-control" id="titulo" name="titulo" required th:field="*{titulo}" type="text"/>
-            </div>
-
-            <!-- Campo: Prioridad -->
-            <div class="form-group mt-3">
-                <label for="prioridad">Prioridad:</label>
-                <select class="form-control" id="prioridad" name="prioridad" required th:field="*{prioridad}">
-                    <option value="Alta">Alta</option>
-                    <option value="Media" selected>Media</option>
-                    <option value="Baja">Baja</option>
-                </select>
-            </div>
-
-            <!-- Botones -->
-            <button class="btn btn-primary mt-3" type="submit">Crear tarea</button>
-            <a class="btn btn-link mt-3" th:href="@{/usuarios/{id}/tareas(id=${usuario.id})}">Cancelar</a>
-
+                <!-- Botones -->
+                <button class="btn btn-primary mt-3" type="submit">Crear tarea</button>
+                <a class="btn btn-link mt-3" th:href="@{/usuarios/{id}/tareas(id=${usuario.id})}">Cancelar</a>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
 
 <div th:replace="fragments::javascript"/>

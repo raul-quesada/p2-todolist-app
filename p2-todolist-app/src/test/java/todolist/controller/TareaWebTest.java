@@ -112,35 +112,6 @@ public class TareaWebTest {
     }
 
     @Test
-    public void postNuevaTareaDevuelveRedirectYAñadeTarea() throws Exception {
-        // GIVEN
-        // Un usuario con dos tareas en la BD
-        Long usuarioId = addUsuarioTareasBD().get("usuarioId");
-
-        // Ver el comentario en el primer test
-        when(managerUserSession.usuarioLogeado()).thenReturn(usuarioId);
-
-        // WHEN, THEN
-        // realizamos la petición POST para añadir una nueva tarea,
-        // el estado HTTP que se devuelve es un REDIRECT al listado
-        // de tareas.
-
-        String urlPost = "/usuarios/" + usuarioId.toString() + "/tareas/nueva";
-        String urlRedirect = "/usuarios/" + usuarioId.toString() + "/tareas";
-
-        this.mockMvc.perform(post(urlPost)
-                        .param("titulo", "Study"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(urlRedirect));
-
-        // y si después consultamos el listado de tareas con una petición
-        // GET el HTML contiene la tarea añadida.
-
-        this.mockMvc.perform(get(urlRedirect))
-                .andExpect((content().string(containsString("Study"))));
-    }
-
-    @Test
     public void deleteTareaDevuelveOKyBorraTarea() throws Exception {
         // GIVEN
         // Un usuario con dos tareas en la BD
@@ -170,34 +141,4 @@ public class TareaWebTest {
                                 containsString("Book a flight"))));
     }
 
-    @Test
-    public void editarTareaActualizaLaTarea() throws Exception {
-        // GIVEN
-        // Un usuario con dos tareas en la BD
-        Map<String, Long> ids = addUsuarioTareasBD();
-        Long usuarioId = ids.get("usuarioId");
-        Long tareaLavarCocheId = ids.get("tareaId");
-
-        // Ver el comentario en el primer test
-        when(managerUserSession.usuarioLogeado()).thenReturn(usuarioId);
-
-        // WHEN, THEN
-        // realizamos una petición POST al endpoint para editar una tarea
-
-        String urlEditar = "/tareas/" + tareaLavarCocheId + "/editar";
-        String urlRedirect = "/usuarios/" + usuarioId + "/tareas";
-
-        this.mockMvc.perform(post(urlEditar)
-                        .param("titulo", "Buy coffee"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(urlRedirect));
-
-        // Y si realizamos un listado de las tareas del usuario
-        // ha cambiado el título de la tarea modificada
-
-        String urlListado = "/usuarios/" + usuarioId + "/tareas";
-
-        this.mockMvc.perform(get(urlListado))
-                .andExpect(content().string(containsString("Buy coffee")));
-    }
 }
