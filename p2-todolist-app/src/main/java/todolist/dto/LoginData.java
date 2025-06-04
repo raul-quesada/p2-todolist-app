@@ -5,6 +5,15 @@ public class LoginData {
     private String eMail;
     private String password;
     private boolean admin;
+    private boolean activo;
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
 
     public boolean isAdmin() {
         return admin;

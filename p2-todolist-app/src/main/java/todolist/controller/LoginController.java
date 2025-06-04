@@ -47,6 +47,11 @@ public class LoginController {
 
             managerUserSession.logearUsuario(usuario.getId());
 
+            if (!usuario.isActivo()) {
+                model.addAttribute("error", "Tu cuenta está desactivada. Contacta con el administrador.");
+                return "formLogin";
+            }
+
             if (usuario.isAdmin()) {
                 session.setAttribute("idUsuarioLogeado", session.getAttribute("idUsuarioLogeado"));
                 return "redirect:/registered";  // admin va a lista de usuarios
@@ -95,6 +100,7 @@ public class LoginController {
         usuario.setFechaNacimiento(registroData.getFechaNacimiento());
         usuario.setNombre(registroData.getNombre());
         usuario.setAdmin(registroData.isAdmin());
+        usuario.setActivo(true);
 
 
         usuarioService.registrar(usuario);

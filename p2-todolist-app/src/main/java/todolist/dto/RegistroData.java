@@ -14,7 +14,15 @@ public class RegistroData {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date fechaNacimiento;
     private boolean admin;
+    private boolean activo;
 
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
 
     public boolean isAdmin() {
         return admin;

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+
 import todolist.service.UsuarioService;
 import todolist.dto.UsuarioData;
 
@@ -38,6 +40,22 @@ public class UsuarioWebController {
         }
         model.addAttribute("usuario", usuario);
         return "descripcionUsuario";
+    }
+
+    @PostMapping("/usuarios/{id}/toggleActivo")
+    public String toggleActivo(@PathVariable Long id, HttpSession session) {
+        Long idAdmin = (Long) session.getAttribute("idUsuarioLogeado");
+        UsuarioData admin = usuarioService.findById(idAdmin);
+
+        if (admin == null || !admin.isAdmin()) {
+            return "redirect:/errorAcceso";
+        }
+
+        UsuarioData usuario = usuarioService.findById(id);
+        if (usuario != null) {
+            usuarioService.cambiarEstadoUsuario(id, !usuario.isActivo());
+        }
+        return "redirect:/registered";
     }
 
 }

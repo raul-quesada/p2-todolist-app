@@ -27,6 +27,7 @@ public class Usuario implements Serializable {
 
     // Nuevo campo para indicar si es administrador
     private boolean admin = false;
+    private boolean activo = true;
 
     // La relación es lazy por defecto,
     // es necesario acceder a la lista de tareas para que se carguen
@@ -90,6 +91,14 @@ public class Usuario implements Serializable {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
     // Getters y setters de la relación
