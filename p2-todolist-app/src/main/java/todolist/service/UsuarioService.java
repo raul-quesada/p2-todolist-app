@@ -85,6 +85,10 @@ public class UsuarioService {
             usuarios.add(modelMapper.map(usuario, UsuarioData.class));
         });
         return usuarios;
-}
+    }
+
+    public boolean existeAdmin() {
+        return usuarioRepository.existsByAdminTrue();
+    }
 
 }

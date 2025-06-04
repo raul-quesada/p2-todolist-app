@@ -39,6 +39,13 @@
                                    placeholder="01-12-2019" th:field="*{fechaNacimiento}"/>
                         </div>
 
+                        <div th:if="${!adminExiste}">
+                            <label>
+                                <input type="checkbox" th:field="*{admin}" />
+                                Registrar como administrador
+                            </label>
+                        </div>
+
                         <button type="submit" class="btn btn-primary">Registro</button>
                         <a class="btn btn-link" href="/login">Ir a login</a>
                     </div>
