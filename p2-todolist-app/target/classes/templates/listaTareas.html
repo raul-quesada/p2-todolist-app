@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments :: head (titulo='Login')"></head>
+<head th:replace="fragments :: head (titulo='Lista de Tareas')"></head>
 
 <body>
 <div th:replace="fragments::navbar"></div>
-<div class="container-fluid">
+<div class="container pt-5">
 
     <div class="row mt-3">
         <div class="col">
-            <h2 th:text="'Listado de tareas de ' + ${usuario.nombre}"></h2>
+            <h2 class="mb-4" th:text="'Listado de tareas de ' + ${usuario.nombre}"></h2>
         </div>
     </div>
 
@@ -29,30 +29,27 @@
                     <td th:text="${tarea.id}"></td>
                     <td th:text="${tarea.titulo}"></td>
                     <td th:text="${tarea.prioridad}"></td>
-                    <td><a class="btn btn-primary btn-xs" th:href="@{/tareas/{id}/editar(id=${tarea.id})}"/>editar</a>
-                        <button class="btn btn-danger btn-xs" onmouseover="" style="cursor: pointer;"
-                           th:onclick="'del(\'/tareas/' + ${tarea.id} + '\')'">borrar</button>
+                    <td>
+                        <a class="btn btn-primary btn-sm me-1" th:href="@{/tareas/{id}/editar(id=${tarea.id})}">Editar</a>
+                        <a class="btn btn-danger btn-sm" href="#" th:onclick="'del(\'/tareas/' + ${tarea.id} + '\')'">Borrar</a>
                     </td>
                 </tr>
                 </tbody>
             </table>
-            <p><a class="btn btn-primary" th:href="@{/usuarios/{id}/tareas/nueva(id=${usuario.id})}"> Nueva tarea</a>
-            <a class="btn btn-link" href="/logout">Salir</a></p>
+            <div class="mt-4">
+                <a class="btn btn-primary me-2" th:href="@{/usuarios/{id}/tareas/nueva(id=${usuario.id})}">Nueva tarea</a>
+                <a class="btn btn-link" href="/logout">Salir</a>
+            </div>
         </div>
     </div>
     <div class="row mt-2">
         <div class="col">
             <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(mensaje)}">
                 <span th:text="${mensaje}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
     </div>
-</div>
-
-
 </div>
 
 <div th:replace="fragments::javascript"/>

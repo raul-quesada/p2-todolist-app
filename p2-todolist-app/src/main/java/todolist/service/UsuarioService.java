@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -72,4 +75,16 @@ public class UsuarioService {
             return modelMapper.map(usuario, UsuarioData.class);
         }
     }
+
+    // Devuelve todos los usuarios de la base de datos 002 User List
+    @Transactional(readOnly = true)
+    public List<UsuarioData> findAll() {
+        Iterable<Usuario> usuariosIterable = usuarioRepository.findAll();
+        List<UsuarioData> usuarios = new ArrayList<>();
+        usuariosIterable.forEach(usuario -> {
+            usuarios.add(modelMapper.map(usuario, UsuarioData.class));
+        });
+        return usuarios;
+}
+
 }
