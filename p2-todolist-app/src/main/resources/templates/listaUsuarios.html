@@ -11,13 +11,18 @@
                 <tr>
                     <th>ID</th>
                     <th>Email</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="usuario : ${usuarios}">
                     <td th:text="${usuario.id}">ID</td>
                     <td th:text="${usuario.email}">Email</td>
+                    <td>
+                        <a th:href="@{'/registered/' + ${usuario.id}}" class="btn btn-primary btn-sm">Detalles</a>
+                    </td>
                 </tr>
+                
             </tbody>
         </table>
     </div>
