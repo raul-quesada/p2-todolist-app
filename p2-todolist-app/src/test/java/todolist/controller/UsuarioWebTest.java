@@ -42,6 +42,10 @@ public class UsuarioWebTest {
         UsuarioData anaGarcia = new UsuarioData();
         anaGarcia.setNombre("Ana García");
         anaGarcia.setId(1L);
+        anaGarcia.setAdmin(false);
+        anaGarcia.setActivo(true);
+        anaGarcia.setEmail("ana.garcia@gmail.com");
+        anaGarcia.setPassword("12345678");
 
         when(usuarioService.login("ana.garcia@gmail.com", "12345678"))
                 .thenReturn(UsuarioService.LoginStatus.LOGIN_OK);
@@ -93,4 +97,26 @@ public class UsuarioWebTest {
                         .param("password","000"))
                 .andExpect(content().string(containsString("Contraseña incorrecta")));
     }
+
+    @Test
+    public void loginRechazaUsuarioBloqueado() throws Exception {
+        UsuarioData usuario = new UsuarioData();
+        usuario.setEmail("bloqueado@test.com");
+        usuario.setPassword("1234");
+        usuario.setActivo(false);
+        usuario.setAdmin(false);
+        usuario.setId(1L);
+        usuario.setNombre("Bloqueado");
+
+        when(usuarioService.login("bloqueado@test.com", "1234")).thenReturn(UsuarioService.LoginStatus.LOGIN_OK);
+        when(usuarioService.findByEmail("bloqueado@test.com")).thenReturn(usuario);
+
+        mockMvc.perform(post("/login")
+                .param("eMail", "bloqueado@test.com")
+                .param("password", "1234"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("error"))
+                .andExpect(model().attribute("error", "Tu cuenta está desactivada. Contacta con el administrador."));
+        }
+
 }

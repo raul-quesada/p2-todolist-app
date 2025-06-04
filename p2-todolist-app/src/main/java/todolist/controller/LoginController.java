@@ -39,22 +39,21 @@ public class LoginController {
     @PostMapping("/login")
     public String loginSubmit(@ModelAttribute LoginData loginData, Model model, HttpSession session) {
 
-        // Llamada al servicio para comprobar si el login es correcto
         UsuarioService.LoginStatus loginStatus = usuarioService.login(loginData.geteMail(), loginData.getPassword());
 
         if (loginStatus == UsuarioService.LoginStatus.LOGIN_OK) {
             UsuarioData usuario = usuarioService.findByEmail(loginData.geteMail());
-
-            managerUserSession.logearUsuario(usuario.getId());
 
             if (!usuario.isActivo()) {
                 model.addAttribute("error", "Tu cuenta está desactivada. Contacta con el administrador.");
                 return "formLogin";
             }
 
+            managerUserSession.logearUsuario(usuario.getId());
+            session.setAttribute("idUsuarioLogeado", usuario.getId());
+
             if (usuario.isAdmin()) {
-                session.setAttribute("idUsuarioLogeado", session.getAttribute("idUsuarioLogeado"));
-                return "redirect:/registered";  // admin va a lista de usuarios
+                return "redirect:/registered";
             }
 
             return "redirect:/usuarios/" + usuario.getId() + "/tareas";
@@ -68,6 +67,7 @@ public class LoginController {
 
         return "formLogin";
     }
+
 
     @GetMapping("/registro")
     public String registroForm(Model model) {
