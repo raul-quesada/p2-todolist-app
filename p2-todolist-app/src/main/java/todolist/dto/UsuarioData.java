@@ -14,6 +14,7 @@ public class UsuarioData {
 
     // Nuevo campo para indicar si es administrador
     private boolean admin;
+    private boolean activo;
 
     // Getters y setters
 
@@ -60,6 +61,14 @@ public class UsuarioData {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
     // Sobreescribimos equals y hashCode para que dos usuarios sean iguales

@@ -91,4 +91,13 @@ public class UsuarioService {
         return usuarioRepository.existsByAdminTrue();
     }
 
+    @Transactional
+public void cambiarEstadoUsuario(Long idUsuario, boolean activo) {
+    Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
+    if (usuario != null) {
+        usuario.setActivo(activo);
+        usuarioRepository.save(usuario);
+    }
+}
+
 }

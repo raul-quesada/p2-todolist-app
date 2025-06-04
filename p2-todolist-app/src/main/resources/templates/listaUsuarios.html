@@ -11,18 +11,32 @@
                 <tr>
                     <th>ID</th>
                     <th>Email</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="usuario : ${usuarios}">
-                    <td th:text="${usuario.id}">ID</td>
-                    <td th:text="${usuario.email}">Email</td>
+                    <td th:text="${usuario.id}"></td>
+                    <td th:text="${usuario.email}"></td>
                     <td>
-                        <a th:href="@{'/registered/' + ${usuario.id}}" class="btn btn-primary btn-sm">Detalles</a>
+                        <span th:if="${usuario.activo}" class="badge bg-success">Activo</span>
+                        <span th:unless="${usuario.activo}" class="badge bg-danger">Bloqueado</span>
+                    </td>
+                    <td>
+                        <div th:if="${usuario.admin}">
+                            <span class="badge bg-info">Admin</span>
+                        </div>
+                        <div th:unless="${usuario.admin}">
+                            <form th:action="@{'/usuarios/' + ${usuario.id} + '/toggleActivo'}" method="post" style="display: inline-block; margin-right: 5px;">
+                                <button type="submit" class="btn btn-sm"
+                                        th:classappend="${usuario.activo} ? 'btn-warning' : 'btn-success'"
+                                        th:text="${usuario.activo} ? 'Bloquear' : 'Activar'"></button>
+                            </form>
+                            <a th:href="@{'/registered/' + ${usuario.id}}" class="btn btn-primary btn-sm">Detalles</a>
+                        </div>
                     </td>
                 </tr>
-                
             </tbody>
         </table>
     </div>
