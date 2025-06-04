@@ -12,6 +12,9 @@ public class UsuarioData {
     private String password;
     private Date fechaNacimiento;
 
+    // Nuevo campo para indicar si es administrador
+    private boolean admin;
+
     // Getters y setters
 
     public Long getId() {
@@ -48,6 +51,15 @@ public class UsuarioData {
 
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+    }
+
+    // Nuevo campo para indicar si es administrador
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 
     // Sobreescribimos equals y hashCode para que dos usuarios sean iguales

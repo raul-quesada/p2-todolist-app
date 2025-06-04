@@ -47,6 +47,11 @@ public class LoginController {
 
             managerUserSession.logearUsuario(usuario.getId());
 
+            if (usuario.isAdmin()) {
+                session.setAttribute("idUsuarioLogeado", session.getAttribute("idUsuarioLogeado"));
+                return "redirect:/registered";  // admin va a lista de usuarios
+            }
+
             return "redirect:/usuarios/" + usuario.getId() + "/tareas";
         } else if (loginStatus == UsuarioService.LoginStatus.USER_NOT_FOUND) {
             model.addAttribute("error", "No existe usuario");
@@ -55,12 +60,17 @@ public class LoginController {
             model.addAttribute("error", "Contraseña incorrecta");
             return "formLogin";
         }
+
         return "formLogin";
     }
 
     @GetMapping("/registro")
     public String registroForm(Model model) {
         model.addAttribute("registroData", new RegistroData());
+
+        boolean adminExiste = usuarioService.existeAdmin(); // método que debes crear en UsuarioService
+        model.addAttribute("adminExiste", adminExiste);
+
         return "formRegistro";
     }
 
@@ -68,12 +78,14 @@ public class LoginController {
    public String registroSubmit(@Valid RegistroData registroData, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
+            model.addAttribute("adminExiste", usuarioService.existeAdmin());
             return "formRegistro";
         }
 
         if (usuarioService.findByEmail(registroData.getEmail()) != null) {
             model.addAttribute("registroData", registroData);
             model.addAttribute("error", "El usuario " + registroData.getEmail() + " ya existe");
+            model.addAttribute("adminExiste", usuarioService.existeAdmin());
             return "formRegistro";
         }
 
@@ -82,6 +94,8 @@ public class LoginController {
         usuario.setPassword(registroData.getPassword());
         usuario.setFechaNacimiento(registroData.getFechaNacimiento());
         usuario.setNombre(registroData.getNombre());
+        usuario.setAdmin(registroData.isAdmin());
+
 
         usuarioService.registrar(usuario);
         return "redirect:/login";
